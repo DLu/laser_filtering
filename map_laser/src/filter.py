@@ -60,6 +60,9 @@ class MapLaser:
         nr = []
 
         for (i, d) in enumerate(msg.ranges):
+            if d>msg.range_max or d<msg.range_min:
+                nr.append( msg.range_max ) 
+                continue
             angle = yaw + msg.angle_min + msg.angle_increment*i
             dx = math.cos(angle) * d
             dy = math.sin(angle) * d
