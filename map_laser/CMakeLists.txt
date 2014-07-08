@@ -7,3 +7,10 @@ catkin_package(
     CATKIN_DEPENDS rospy sensor_msgs nav_msgs tf std_msgs
 )
 
+install(FILES filters.yaml lfilter.launch
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/config
+)
+
+install(PROGRAMS src/filter.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+  
