@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <name>laser_filtering</name>
-  <version>0.0.1</version>
+  <version>0.0.2</version>
   <description>ROS Libraries for filtering specific kinds of laser scans</description>
   <maintainer email="davidvlu@gmail.com">David V. Lu!!</maintainer>
 
