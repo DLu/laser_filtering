@@ -26,6 +26,7 @@
   <run_depend>nav_msgs</run_depend>
   <run_depend>tf</run_depend>
   <run_depend>std_msgs</run_depend>
+  <run_depend>roslib</run_depend>
+  <run_depend>laser_filters</run_depend>
 
 </package>
-

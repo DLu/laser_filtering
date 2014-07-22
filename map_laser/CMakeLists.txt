@@ -11,6 +11,6 @@ install(FILES filters.yaml lfilter.launch
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/config
 )
 
-install(PROGRAMS src/filter.py
+install(PROGRAMS scripts/filter.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
   
