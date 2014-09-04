@@ -61,7 +61,7 @@ class MapLaser:
 
         for (i, d) in enumerate(msg.ranges):
             if math.isnan(d) or d>msg.range_max or d<msg.range_min:
-                nr.append( msg.range_max ) 
+                nr.append( msg.range_max + 1.0 )
                 continue
             angle = yaw + msg.angle_min + msg.angle_increment*i
             dx = math.cos(angle) * d
