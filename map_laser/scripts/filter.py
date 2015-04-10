@@ -13,7 +13,9 @@ import math
 class MapLaser(object):
     def __init__(self):
         rospy.init_node('map_laser_filter')
-        self.pub = rospy.Publisher('/base_scan_filter', LaserScan)
+        self.pub = rospy.Publisher('/base_scan_filter',
+                                   LaserScan,
+                                   queue_size=10)
         self.listener = tf.TransformListener()
         self.map = None
         self.save = None
