@@ -9,14 +9,18 @@ from tf.transformations import euler_from_quaternion
 from std_msgs.msg import ColorRGBA
 import math
 
-class MapLaser:
+
+class MapLaser(object):
     def __init__(self):
         rospy.init_node('map_laser_filter')
         self.pub = rospy.Publisher('/base_scan_filter', LaserScan)
         self.listener = tf.TransformListener()
         self.map = None
         self.save = None
-        self.sub = rospy.Subscriber('/scan_filtered', LaserScan, self.laser_cb, queue_size=1)
+        self.sub = rospy.Subscriber('/scan_filtered',
+                                    LaserScan,
+                                    self.laser_cb,
+                                    queue_size=1)
         self.sub2 = rospy.Subscriber('/map', OccupancyGrid, self.map_cb)
 
 
@@ -33,13 +37,13 @@ class MapLaser:
 
     def is_occupied(self, x, y):
         N = 2
-        for dx in range(-N, N+1):
-            for dy in range(-N, N+1):
-                index = (x + dx) + (y+dy)*self.map.info.width
+        for dx in range(-N, N + 1):
+            for dy in range(-N, N + 1):
+                index = (x + dx) + (y + dy) * self.map.info.width
                 if index < 0 or index > len(self.map.data):
                     continue
                 value = self.map.data[index]
-                if value > 50 or value<0:
+                if value > 50 or value < 0:
                     return True
         return False
 
@@ -48,9 +52,9 @@ class MapLaser:
         if self.map is None:
             return
         try:
-            (trans,rot) = self.get_laser_frame(msg)
+            (trans, rot) = self.get_laser_frame(msg)
             self.save = (trans, rot)
-        except: 
+        except Exception: # TODO should list handled exceptions
             if self.save is None:
                 return
             (trans, rot) = self.save
@@ -60,8 +64,8 @@ class MapLaser:
         nr = []
 
         for (i, d) in enumerate(msg.ranges):
-            if math.isnan(d) or d>msg.range_max or d<msg.range_min:
-                nr.append( msg.range_max + 1.0 )
+            if math.isnan(d) or d > msg.range_max or d < msg.range_min:
+                nr.append(msg.range_max + 1.0)
                 continue
             angle = yaw + msg.angle_min + msg.angle_increment*i
             dx = math.cos(angle) * d
@@ -73,13 +77,13 @@ class MapLaser:
             grid_y = int((map_y - self.map.info.origin.position.y) / self.map.info.resolution)
 
             if self.is_occupied(grid_x, grid_y):
-                nr.append( msg.range_max + 1.0 )
+                nr.append(msg.range_max + 1.0)
             else:
-                nr.append( d )
+                nr.append(d)
 
         msg.ranges = nr
         self.pub.publish(msg)
 
-if __name__=='__main__':
+if __name__ == '__main__':
     x = MapLaser()
     rospy.spin()
