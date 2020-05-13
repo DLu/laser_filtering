@@ -1,16 +1,22 @@
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 3.0.2)
 project(map_laser)
 
-find_package(catkin REQUIRED COMPONENTS rospy sensor_msgs nav_msgs tf std_msgs)
+find_package(catkin REQUIRED COMPONENTS nav_msgs rospy sensor_msgs std_msgs tf)
 
 catkin_package(
-    CATKIN_DEPENDS rospy sensor_msgs nav_msgs tf std_msgs
+    CATKIN_DEPENDS nav_msgs rospy sensor_msgs std_msgs tf
 )
+
+if(CATKIN_ENABLE_TESTING)
+  find_package(catkin REQUIRED COMPONENTS roslaunch roslint)
+  roslaunch_add_file_check(lfilter.launch)
+  roslint_python()
+  roslint_add_test()
+endif()
 
 install(FILES filters.yaml lfilter.launch
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+        DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
 
-install(PROGRAMS scripts/filter.py
-  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
-  
+catkin_install_python(PROGRAMS scripts/filter.py
+                      DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})

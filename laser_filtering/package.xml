@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<package>
+<package format="2">
   <name>laser_filtering</name>
   <version>0.0.4</version>
   <description>ROS Libraries for filtering specific kinds of laser scans</description>
@@ -7,8 +7,7 @@
 
   <license>BSD</license>
   <buildtool_depend>catkin</buildtool_depend>
-  <run_depend>map_laser</run_depend>
-  
+  <exec_depend>map_laser</exec_depend>
   <export>
     <metapackage/>
   </export>

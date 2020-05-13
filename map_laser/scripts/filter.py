@@ -1,12 +1,10 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
-import roslib; roslib.load_manifest('map_laser')
 import rospy
 import tf
 from sensor_msgs.msg import LaserScan
 from nav_msgs.msg import OccupancyGrid
 from tf.transformations import euler_from_quaternion
-from std_msgs.msg import ColorRGBA
 import math
 
 
@@ -24,7 +22,6 @@ class MapLaser(object):
                                     self.laser_cb,
                                     queue_size=1)
         self.sub2 = rospy.Subscriber('/map', OccupancyGrid, self.map_cb)
-
 
     def map_cb(self, msg):
         self.map = msg
@@ -49,14 +46,13 @@ class MapLaser(object):
                     return True
         return False
 
-
     def laser_cb(self, msg):
         if self.map is None:
             return
         try:
             (trans, rot) = self.get_laser_frame(msg)
             self.save = (trans, rot)
-        except Exception: # TODO should list handled exceptions
+        except tf.Exception:
             if self.save is None:
                 return
             (trans, rot) = self.save
@@ -69,7 +65,7 @@ class MapLaser(object):
             if math.isnan(d) or d > msg.range_max or d < msg.range_min:
                 nr.append(msg.range_max + 1.0)
                 continue
-            angle = yaw + msg.angle_min + msg.angle_increment*i
+            angle = yaw + msg.angle_min + msg.angle_increment * i
             dx = math.cos(angle) * d
             dy = math.sin(angle) * d
             map_x = trans[0] + dx
@@ -85,6 +81,7 @@ class MapLaser(object):
 
         msg.ranges = nr
         self.pub.publish(msg)
+
 
 if __name__ == '__main__':
     x = MapLaser()
