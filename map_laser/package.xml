@@ -1,6 +1,6 @@
 <package format="2">
   <name>map_laser</name>
-  <version>0.0.5</version>
+  <version>0.0.6</version>
   <description>Filters a laser scan to remove points that are in the current static map</description>
   <maintainer email="davidvlu@gmail.com">David V. Lu!!</maintainer>
 
